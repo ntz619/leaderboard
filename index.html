@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard</title>
+  <script src="https://portals-labs.github.io/portals-sdk/portals-sdk.js?v=10005456"></script>
+  <style>
+    @font-face {
+      font-family: 'ObelixPro';
+      src: url('https://cdn.jsdelivr.net/gh/ntz619/XP_Dashboard_prototype/obelix-pro-3.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --panel-width: min(360px, calc(100vw - 28px));
+      --gold-1: #ffd437;
+      --gold-2: #ffc400;
+      --gold-3: #f3b004;
+      --gold-4: #ffef99;
+      --track-1: rgba(89, 66, 41, 0.93);
+      --track-2: rgba(52, 35, 16, 0.97);
+      --text-white: rgba(255, 255, 255, 0.98);
+      --row-h: 30px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: transparent;
+    }
+
+    body {
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 13px 14px;
+      color: var(--text-white);
+      font-family: 'ObelixPro', Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: geometricPrecision;
+      user-select: none;
+      pointer-events: auto;
+    }
+
+    .panel {
+      width: var(--panel-width);
+      background: linear-gradient(180deg, var(--track-1) 0%, var(--track-2) 100%);
+      border-radius: 6px;
+      border-top: 2px solid var(--gold-2);
+      box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(255, 196, 0, 0.10),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      overflow: hidden;
+    }
+
+    /* ── Header ────────────────────────────────── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 8px 14px 7px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(255, 196, 0, 0.14);
+    }
+
+    .header-icon { font-size: 13px; line-height: 1; }
+
+    .header-title {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      color: var(--gold-1);
+      text-shadow:
+        0 1px 8px rgba(255, 196, 0, 0.55),
+        0 0 2px rgba(255, 240, 0, 0.20);
+    }
+
+    /* ── Tabs ──────────────────────────────────── */
+    .tabs {
+      display: flex;
+      gap: 5px;
+      padding: 7px 10px 5px;
+      border-bottom: 1px solid rgba(255, 196, 0, 0.08);
+    }
+
+    .tab {
+      flex: 1;
+      padding: 4px 0 3px;
+      font-size: 8px;
+      letter-spacing: 1.2px;
+      text-align: center;
+      border-radius: 999px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.38);
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: color 120ms, border-color 120ms, background 120ms, box-shadow 120ms;
+      font-family: inherit;
+      pointer-events: auto;
+    }
+
+    .tab:hover:not(.active) {
+      color: rgba(255, 255, 255, 0.68);
+      border-color: rgba(255, 196, 0, 0.30);
+    }
+
+    .tab.active {
+      color: #3d1a00;
+      background: linear-gradient(180deg, #fff8bf 0%, #ffd64a 55%, #f2ae00 100%);
+      border-color: transparent;
+      box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.22),
+        0 0 8px rgba(255, 216, 87, 0.38);
+    }
+
+    /* ── Rows ──────────────────────────────────── */
+    .rows-wrap { transition: opacity 140ms ease; }
+    .rows-wrap.fading { opacity: 0; }
+
+    .rows { padding: 3px 0 3px; }
+
+    .row {
+      display: flex;
+      align-items: center;
+      height: var(--row-h);
+      padding: 0 12px;
+      gap: 8px;
+    }
+
+    .row:nth-child(even) { background: rgba(255, 255, 255, 0.022); }
+
+    .row.is-me {
+      background: rgba(255, 196, 0, 0.09);
+      border-left: 2px solid var(--gold-2);
+      padding-left: 10px;
+    }
+
+    .row-rank {
+      font-size: 10px;
+      min-width: 24px;
+      text-align: right;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .rank-1 { color: #ffd700; text-shadow: 0 0 10px rgba(255,210,0,0.65); }
+    .rank-2 { color: #c8c8c8; text-shadow: 0 0 6px rgba(200,200,200,0.40); }
+    .rank-3 { color: #cd7f32; text-shadow: 0 0 7px rgba(205,127,50,0.50); }
+    .rank-other { color: rgba(255,255,255,0.30); font-size: 9px; }
+
+    .row-name {
+      flex: 1;
+      font-size: 9px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .you-tag {
+      color: var(--gold-3);
+      font-size: 7px;
+      margin-left: 4px;
+      opacity: 0.85;
+    }
+
+    .row-value {
+      font-size: 8.5px;
+      white-space: nowrap;
+      color: var(--gold-4);
+      flex-shrink: 0;
+    }
+
+    /* ── Own rank outside top 10 ───────────────── */
+    .own-rank-sep {
+      height: 1px;
+      margin: 2px 12px;
+      background: repeating-linear-gradient(
+        90deg,
+        rgba(255,196,0,0.22) 0px, rgba(255,196,0,0.22) 4px,
+        transparent 4px, transparent 8px
+      );
+    }
+
+    .own-rank-row {
+      display: flex;
+      align-items: center;
+      height: calc(var(--row-h) - 2px);
+      padding: 0 10px;
+      gap: 8px;
+      background: rgba(255, 196, 0, 0.07);
+      border-left: 2px solid rgba(243, 176, 4, 0.50);
+      margin-bottom: 2px;
+    }
+
+    .own-rank-row .row-rank  { color: rgba(255,255,255,0.38); font-size: 9px; }
+    .own-rank-row .row-name  { font-size: 9px; color: var(--gold-4); }
+    .own-rank-row .row-value { font-size: 8.5px; color: var(--gold-4); }
+
+    /* ── Placeholder ───────────────────────────── */
+    .placeholder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 200px;
+      font-size: 8px;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.22);
+    }
+
+    /* ── Footer ────────────────────────────────── */
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 4px 12px 6px;
+      font-size: 7px;
+      letter-spacing: 0.5px;
+      color: rgba(255,255,255,0.18);
+      border-top: 1px solid rgba(255,196,0,0.07);
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+
+    <div class="header">
+      <span class="header-icon">🏆</span>
+      <div class="header-title">LEADERBOARD</div>
+    </div>
+
+    <div class="tabs">
+      <div class="tab active" data-cat="xp">XP</div>
+      <div class="tab" data-cat="wins">WINS</div>
+      <div class="tab" data-cat="plays">PLAYS</div>
+    </div>
+
+    <div id="rowsWrap" class="rows-wrap">
+      <div id="rows" class="rows">
+        <div class="placeholder">LOADING…</div>
+      </div>
+    </div>
+
+    <div id="footer" class="footer">—</div>
+
+  </div>
+
+  <script>
+    const SUPABASE_URL = 'https://tpdedcjccygpwkofdyqg.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_kYGFYlXrQHt17-uihwy7tA_CxkbQYNH';
+    const POLL_MS = 60_000;
+
+    let currentCategory = 'xp';
+    let currentUsername  = null;
+    let pollHandle       = null;
+    let isFetching       = false;
+
+    const rowsWrap = document.getElementById('rowsWrap');
+    const rowsEl   = document.getElementById('rows');
+    const footerEl = document.getElementById('footer');
+
+    // ── Supabase ──────────────────────────────────────────────
+
+    function buildHeaders() {
+      return { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY };
+    }
+
+    async function callRpc(fn, body) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+        method: 'POST',
+        headers: buildHeaders(),
+        body: JSON.stringify(body),
+        cache: 'no-store'
+      });
+      const text = await res.text();
+      let data;
+      try { data = text ? JSON.parse(text) : null; } catch { data = text; }
+      if (!res.ok) throw new Error((data && data.message) || res.statusText);
+      return data;
+    }
+
+    // ── Format helpers ────────────────────────────────────────
+
+    function fmtValue(val, cat) {
+      const n = Number(val) || 0;
+      const s = n.toLocaleString();
+      if (cat === 'xp')   return s + ' XP';
+      if (cat === 'wins') return s + ' W';
+      return s + ' P';
+    }
+
+    function esc(str) {
+      return String(str || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+    }
+
+    function rankIcon(n) {
+      if (n === 1) return '🥇';
+      if (n === 2) return '🥈';
+      if (n === 3) return '🥉';
+      return n;
+    }
+
+    function rankCls(n) {
+      if (n === 1) return 'rank-1';
+      if (n === 2) return 'rank-2';
+      if (n === 3) return 'rank-3';
+      return 'rank-other';
+    }
+
+    // ── Render ────────────────────────────────────────────────
+
+    function render(rows, ownRank) {
+      if (!rows || rows.length === 0) {
+        rowsEl.innerHTML = '<div class="placeholder">NO DATA YET</div>';
+        return;
+      }
+
+      const meInTop = rows.some(r => r.username === currentUsername);
+      let html = '';
+
+      for (const r of rows) {
+        const rank = Number(r.rank);
+        const isMe = r.username === currentUsername;
+        html += `
+          <div class="row${isMe ? ' is-me' : ''}">
+            <div class="row-rank ${rankCls(rank)}">${rankIcon(rank)}</div>
+            <div class="row-name">${esc(r.username)}${isMe ? '<span class="you-tag">(you)</span>' : ''}</div>
+            <div class="row-value">${fmtValue(r.value, currentCategory)}</div>
+          </div>`;
+      }
+
+      if (!meInTop && ownRank && currentUsername) {
+        html += `
+          <div class="own-rank-sep"></div>
+          <div class="own-rank-row">
+            <div class="row-rank">${Number(ownRank.rank).toLocaleString()}</div>
+            <div class="row-name">${esc(currentUsername)}<span class="you-tag">(you)</span></div>
+            <div class="row-value">${fmtValue(ownRank.value, currentCategory)}</div>
+          </div>`;
+      }
+
+      rowsEl.innerHTML = html;
+    }
+
+    // ── Fetch & refresh ───────────────────────────────────────
+
+    async function refresh() {
+      if (isFetching) return;
+      isFetching = true;
+      try {
+        const [rows, ownRankRaw] = await Promise.all([
+          callRpc('get_leaderboard', { p_category: currentCategory, p_limit: 10 }),
+          currentUsername
+            ? callRpc('get_player_rank', { p_username: currentUsername, p_category: currentCategory })
+                .then(d => Array.isArray(d) ? d[0] : d)
+                .catch(() => null)
+            : Promise.resolve(null)
+        ]);
+        render(Array.isArray(rows) ? rows : [], ownRankRaw || null);
+        const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        footerEl.textContent = 'UPDATED ' + t;
+      } catch (err) {
+        console.error('Leaderboard fetch failed:', err);
+        rowsEl.innerHTML = '<div class="placeholder">FETCH ERROR</div>';
+      } finally {
+        isFetching = false;
+      }
+    }
+
+    function startPolling() {
+      if (pollHandle) clearInterval(pollHandle);
+      pollHandle = setInterval(refresh, POLL_MS);
+    }
+
+    // ── Tab switching ─────────────────────────────────────────
+
+    async function switchTab(cat) {
+      if (cat === currentCategory) return;
+      currentCategory = cat;
+      document.querySelectorAll('.tab').forEach(t =>
+        t.classList.toggle('active', t.dataset.cat === cat)
+      );
+      rowsWrap.classList.add('fading');
+      await refresh();
+      rowsWrap.classList.remove('fading');
+    }
+
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => switchTab(tab.dataset.cat));
+    });
+
+    // ── Portals message ───────────────────────────────────────
+
+    function extractUsername(raw) {
+      try {
+        const msg = String(raw || '').trim();
+        try {
+          const p = JSON.parse(msg);
+          if (p && p.username) return String(p.username).trim();
+        } catch {}
+        const normalised = msg.replace(/=\s*(?=[\[{"'\-\dtruefalsen])/g, ':');
+        try {
+          const p = JSON.parse(normalised);
+          if (p && p.username) return String(p.username).trim();
+        } catch {}
+        const m = msg.match(/username\s*[=:]\s*["']?([^\s"';,}]+)/i);
+        return m ? m[1].trim() : null;
+      } catch { return null; }
+    }
+
+    async function handlePortalsMessage(message) {
+      try {
+        const username = extractUsername(message);
+        if (username) currentUsername = username;
+        await refresh();
+        startPolling();
+      } catch (err) {
+        console.error('Portals message handling failed:', err);
+      }
+    }
+
+    window.handlePortalsMessage = handlePortalsMessage;
+
+    // Boot
+    refresh();
+    startPolling();
+    PortalsSdk.setMessageListener(msg => handlePortalsMessage(msg));
+  </script>
+</body>
+</html>
