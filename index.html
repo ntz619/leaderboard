@@ -57,7 +57,10 @@
         0 8px 24px rgba(0, 0, 0, 0.45),
         0 0 0 1px rgba(255, 196, 0, 0.10),
         inset 0 1px 0 rgba(255, 255, 255, 0.06);
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255, 196, 0, 0.18) transparent;
     }
 
     /* ── Header ────────────────────────────────── */
@@ -69,6 +72,10 @@
       padding: 8px 14px 7px;
       background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%);
       border-bottom: 1px solid rgba(255, 196, 0, 0.14);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(4px);
     }
     .header-icon { font-size: 13px; line-height: 1; }
     .header-title {
@@ -150,13 +157,10 @@
 
     /* ── Main area ─────────────────────────────── */
     .main-area { position: relative; overflow: hidden; }
-
-    /* ── List view ─────────────────────────────── */
     .list-view.hidden { display: none; }
 
     .rows-wrap { transition: opacity 140ms ease; }
     .rows-wrap.fading { opacity: 0; }
-
     .rows { padding: 3px 0 3px; }
 
     .row {
@@ -197,13 +201,7 @@
       text-overflow: ellipsis;
     }
     .you-tag { color: var(--gold-3); font-size: 7px; margin-left: 4px; opacity: 0.85; }
-
-    .row-value {
-      font-size: 8.5px;
-      white-space: nowrap;
-      color: var(--gold-4);
-      flex-shrink: 0;
-    }
+    .row-value { font-size: 8.5px; white-space: nowrap; color: var(--gold-4); flex-shrink: 0; }
     .row-chevron { color: rgba(255,255,255,0.18); font-size: 11px; flex-shrink: 0; }
 
     /* ── Own rank outside top 10 ───────────────── */
@@ -211,8 +209,7 @@
       height: 1px;
       margin: 2px 12px;
       background: repeating-linear-gradient(
-        90deg,
-        rgba(255,196,0,0.22) 0px, rgba(255,196,0,0.22) 4px,
+        90deg, rgba(255,196,0,0.22) 0px, rgba(255,196,0,0.22) 4px,
         transparent 4px, transparent 8px
       );
     }
@@ -233,7 +230,6 @@
     .own-rank-row .row-name  { font-size: 9px; color: var(--gold-4); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .own-rank-row .row-value { font-size: 8.5px; color: var(--gold-4); }
 
-    /* ── Placeholder ───────────────────────────── */
     .placeholder {
       display: flex;
       align-items: center;
@@ -288,33 +284,154 @@
       padding: 7px 14px 6px;
       border-bottom: 1px solid rgba(255,196,0,0.07);
     }
-    .detail-section:last-child { border-bottom: none; padding-bottom: 8px; }
+    .detail-section:last-child { border-bottom: none; padding-bottom: 10px; }
 
     .section-title {
       font-size: 7px;
       letter-spacing: 1.5px;
       color: rgba(255,196,0,0.45);
       margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .section-count {
+      color: rgba(255,255,255,0.22);
+      font-size: 7px;
+      letter-spacing: 0;
     }
 
     .stat-rows { display: flex; flex-direction: column; gap: 3px; }
-    .stat-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
+    .stat-row { display: flex; justify-content: space-between; align-items: baseline; }
     .stat-lbl { font-size: 7.5px; color: rgba(255,255,255,0.35); letter-spacing: 0.3px; }
     .stat-val { font-size: 8.5px; color: var(--gold-4); }
     .stat-val.gold { color: var(--gold-1); }
 
-    .game-breakdown {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 3px 10px;
-    }
+    .game-breakdown { display: flex; flex-wrap: wrap; gap: 3px 10px; }
     .gs { font-size: 7.5px; }
     .gs-name { color: rgba(255,255,255,0.28); }
     .gs-val  { color: var(--gold-4); }
+
+    /* ── Achievement badges ────────────────────── */
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      cursor: default;
+      border: 1.5px solid transparent;
+      transition: transform 120ms, box-shadow 120ms;
+      flex-shrink: 0;
+    }
+    .badge:hover { transform: scale(1.12); }
+
+    .badge.rarity-legendary {
+      background: linear-gradient(145deg, rgba(90,58,0,0.90) 0%, rgba(55,35,0,0.95) 100%);
+      border-color: #ffd700;
+      box-shadow:
+        0 0 10px rgba(255, 210, 0, 0.45),
+        inset 0 1px 0 rgba(255,255,255,0.10);
+    }
+    .badge.rarity-legendary:hover {
+      box-shadow: 0 0 16px rgba(255, 210, 0, 0.70), inset 0 1px 0 rgba(255,255,255,0.10);
+    }
+
+    .badge.rarity-epic {
+      background: linear-gradient(145deg, rgba(55,0,90,0.90) 0%, rgba(35,0,60,0.95) 100%);
+      border-color: #c77dff;
+      box-shadow:
+        0 0 9px rgba(160, 80, 255, 0.45),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+    .badge.rarity-epic:hover {
+      box-shadow: 0 0 14px rgba(160, 80, 255, 0.70), inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .badge.rarity-rare {
+      background: linear-gradient(145deg, rgba(0,35,90,0.90) 0%, rgba(0,22,60,0.95) 100%);
+      border-color: #4da6ff;
+      box-shadow:
+        0 0 8px rgba(77, 166, 255, 0.40),
+        inset 0 1px 0 rgba(255,255,255,0.07);
+    }
+    .badge.rarity-rare:hover {
+      box-shadow: 0 0 12px rgba(77, 166, 255, 0.65), inset 0 1px 0 rgba(255,255,255,0.07);
+    }
+
+    .badge.rarity-common {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.16);
+    }
+    .badge.rarity-common:hover {
+      box-shadow: 0 0 7px rgba(255,255,255,0.15);
+    }
+
+    .badge.locked {
+      opacity: 0.15;
+      filter: grayscale(1);
+      cursor: default;
+    }
+    .badge.locked:hover { transform: none; box-shadow: none; }
+
+    /* ── Tooltip ───────────────────────────────── */
+    .tooltip {
+      position: fixed;
+      z-index: 9999;
+      display: none;
+      max-width: 190px;
+      padding: 7px 10px 6px;
+      background: linear-gradient(180deg, rgba(58,37,14,0.99) 0%, rgba(38,23,8,1.00) 100%);
+      border: 1px solid rgba(255, 196, 0, 0.30);
+      border-radius: 5px;
+      box-shadow:
+        0 6px 18px rgba(0,0,0,0.60),
+        0 0 0 1px rgba(0,0,0,0.25);
+      pointer-events: none;
+      font-family: 'ObelixPro', Arial, sans-serif;
+    }
+    .tt-rarity {
+      font-size: 6.5px;
+      letter-spacing: 1.2px;
+      margin-bottom: 3px;
+      text-transform: uppercase;
+    }
+    .tt-rarity.legendary { color: #ffd700; }
+    .tt-rarity.epic      { color: #c77dff; }
+    .tt-rarity.rare      { color: #4da6ff; }
+    .tt-rarity.common    { color: rgba(255,255,255,0.40); }
+    .tt-name {
+      font-size: 9px;
+      color: var(--gold-1);
+      letter-spacing: 0.4px;
+      margin-bottom: 3px;
+      line-height: 1.2;
+    }
+    .tt-desc {
+      font-size: 7.5px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.35;
+    }
+    .tt-date {
+      font-size: 6.5px;
+      color: rgba(255, 196, 0, 0.40);
+      margin-top: 4px;
+      letter-spacing: 0.3px;
+    }
+    .tt-locked {
+      font-size: 7px;
+      color: rgba(255,255,255,0.25);
+      margin-top: 3px;
+      letter-spacing: 0.5px;
+    }
 
     /* ── Footer ────────────────────────────────── */
     .footer {
@@ -376,6 +493,9 @@
 
   </div>
 
+  <!-- Global tooltip — lives outside panel to avoid clipping -->
+  <div id="tooltip" class="tooltip"></div>
+
   <script>
     /* ── Constants ──────────────────────────────────────────── */
     const SUPABASE_URL = 'https://tpdedcjccygpwkofdyqg.supabase.co';
@@ -410,12 +530,12 @@
     const detailBackEl    = document.getElementById('detailBack');
     const detailContentEl = document.getElementById('detailContent');
     const footerEl        = document.getElementById('footer');
+    const tooltipEl       = document.getElementById('tooltip');
 
     /* ── Supabase ───────────────────────────────────────────── */
     function buildHeaders() {
       return { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY };
     }
-
     async function callRpc(fn, body) {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
         method: 'POST', headers: buildHeaders(),
@@ -450,19 +570,15 @@
       if (currentTab === 'xp') return 'xp';
       return currentGame ? `${currentTab}_${currentGame}` : currentTab;
     }
-
     function fmtValue(val, cat) {
-      const n = Number(val) || 0;
-      const s = n.toLocaleString();
-      if (!cat || cat === 'xp')        return s + ' XP';
-      if (cat.startsWith('wins'))      return s + ' W';
+      const n = Number(val) || 0, s = n.toLocaleString();
+      if (!cat || cat === 'xp')   return s + ' XP';
+      if (cat.startsWith('wins')) return s + ' W';
       return s + ' P';
     }
-
     function esc(str) {
       return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
-
     function rankIcon(n) {
       if (n === 1) return '🥇'; if (n === 2) return '🥈'; if (n === 3) return '🥉';
       return n;
@@ -471,24 +587,50 @@
       if (n === 1) return 'rank-1'; if (n === 2) return 'rank-2'; if (n === 3) return 'rank-3';
       return 'rank-other';
     }
-
     function relTime(iso) {
       if (!iso) return '—';
-      const diff = Date.now() - new Date(iso).getTime();
-      const m = Math.floor(diff / 60000);
+      const diff = Date.now() - new Date(iso).getTime(), m = Math.floor(diff / 60000);
       if (m < 1)  return 'just now';
       if (m < 60) return `${m}m ago`;
       const h = Math.floor(m / 60);
       if (h < 24) return `${h}h ago`;
       return `${Math.floor(h / 24)}d ago`;
     }
-
     function fmtDate(iso) {
       if (!iso) return '—';
       return new Date(iso).toLocaleDateString([], { month: 'short', year: 'numeric' });
     }
-
     function fmtGame(key) { return GAME_LABELS[key] || key || '—'; }
+
+    /* ── Tooltip ────────────────────────────────────────────── */
+    function positionTooltip(cx, cy) {
+      tooltipEl.style.visibility = 'hidden';
+      tooltipEl.style.display = 'block';
+      const tw = tooltipEl.offsetWidth, th = tooltipEl.offsetHeight;
+      tooltipEl.style.visibility = '';
+      let x = cx + 12, y = cy - th - 10;
+      if (x + tw > window.innerWidth  - 6) x = cx - tw - 12;
+      if (y < 6)                           y = cy + 16;
+      if (y + th > window.innerHeight - 6) y = window.innerHeight - th - 6;
+      tooltipEl.style.left = x + 'px';
+      tooltipEl.style.top  = y + 'px';
+    }
+
+    function showTooltip(e, ach) {
+      const earned  = !!ach.earned_at;
+      const rareLbl = ach.rarity.charAt(0).toUpperCase() + ach.rarity.slice(1);
+      let html = `<div class="tt-rarity ${ach.rarity}">${rareLbl}</div>`;
+      html    += `<div class="tt-name">${esc(ach.name)}</div>`;
+      html    += `<div class="tt-desc">${esc(ach.description)}</div>`;
+      if (earned) {
+        html += `<div class="tt-date">Earned ${fmtDate(ach.earned_at)}</div>`;
+      } else {
+        html += `<div class="tt-locked">🔒 NOT YET EARNED</div>`;
+      }
+      tooltipEl.innerHTML = html;
+      positionTooltip(e.clientX, e.clientY);
+    }
+    function hideTooltip() { tooltipEl.style.display = 'none'; }
 
     /* ── Render list ────────────────────────────────────────── */
     function renderRows(rows, ownRank) {
@@ -496,13 +638,10 @@
         rowsEl.innerHTML = '<div class="placeholder">NO DATA YET</div>';
         return;
       }
-      const cat = apiCat();
-      const meInTop = rows.some(r => r.username === currentUsername);
+      const cat = apiCat(), meInTop = rows.some(r => r.username === currentUsername);
       let html = '';
-
       for (const r of rows) {
-        const rank = Number(r.rank);
-        const isMe = r.username === currentUsername;
+        const rank = Number(r.rank), isMe = r.username === currentUsername;
         html += `
           <div class="row${isMe ? ' is-me' : ''}" data-username="${esc(r.username)}" data-rank="${rank}">
             <div class="row-rank ${rankCls(rank)}">${rankIcon(rank)}</div>
@@ -511,7 +650,6 @@
             <div class="row-chevron">›</div>
           </div>`;
       }
-
       if (!meInTop && ownRank && currentUsername) {
         html += `
           <div class="own-rank-sep"></div>
@@ -521,11 +659,50 @@
             <div class="row-value">${fmtValue(ownRank.value, cat)}</div>
           </div>`;
       }
-
       rowsEl.innerHTML = html;
       rowsEl.querySelectorAll('[data-username]').forEach(el => {
         el.addEventListener('click', () => openDetail(el.dataset.username, Number(el.dataset.rank)));
       });
+    }
+
+    /* ── Render badges ──────────────────────────────────────── */
+    function renderBadges(achs) {
+      const earned = achs.filter(a => !!a.earned_at);
+      const locked = achs.filter(a => !a.earned_at);
+      const total  = achs.length;
+      const container = document.getElementById('badgesSection');
+      if (!container) return;
+
+      // Update count
+      const countEl = container.querySelector('.section-count');
+      if (countEl) countEl.textContent = `${earned.length} / ${total}`;
+
+      const grid = container.querySelector('.badges');
+      if (!grid) return;
+
+      const all = [...earned, ...locked];
+      grid.innerHTML = '';
+
+      for (const ach of all) {
+        const isLocked = !ach.earned_at;
+        const div = document.createElement('div');
+        div.className = `badge rarity-${ach.rarity}${isLocked ? ' locked' : ''}`;
+        div.textContent = ach.icon;
+        div.title = '';  // prevent native tooltip
+
+        if (!isLocked) {
+          div.addEventListener('mouseenter', (e) => showTooltip(e, ach));
+          div.addEventListener('mousemove',  (e) => positionTooltip(e.clientX, e.clientY));
+          div.addEventListener('mouseleave', hideTooltip);
+        } else {
+          // Show tooltip for locked too — gives players info on what to aim for
+          div.addEventListener('mouseenter', (e) => showTooltip(e, ach));
+          div.addEventListener('mousemove',  (e) => positionTooltip(e.clientX, e.clientY));
+          div.addEventListener('mouseleave', hideTooltip);
+        }
+
+        grid.appendChild(div);
+      }
     }
 
     /* ── Detail view ────────────────────────────────────────── */
@@ -535,22 +712,29 @@
       detailContentEl.innerHTML = '<div class="placeholder">LOADING…</div>';
 
       try {
-        const raw = await callRpc('get_player_stats', { p_username: username });
-        const p = Array.isArray(raw) ? raw[0] : raw;
+        const [raw, achsRaw] = await Promise.all([
+          callRpc('get_player_stats',        { p_username: username }),
+          callRpc('get_player_achievements', { p_username: username })
+        ]);
+
+        const p    = Array.isArray(raw)    ? raw[0]    : raw;
+        const achs = Array.isArray(achsRaw) ? achsRaw : [];
+
         if (!p) { detailContentEl.innerHTML = '<div class="placeholder">NOT FOUND</div>'; return; }
 
-        const totalWins = (Number(p.wins_quadclaim)||0) + (Number(p.wins_memoryclaim)||0)
-                        + (Number(p.wins_gunspleef)||0)  + (Number(p.wins_runspleef)||0);
-        const totalPlays = (Number(p.plays_quadclaim)||0)   + (Number(p.plays_memoryclaim)||0)
-                         + (Number(p.plays_gunspleef)||0)   + (Number(p.plays_runspleef)||0)
+        const totalWins  = (Number(p.wins_quadclaim)||0)  + (Number(p.wins_memoryclaim)||0)
+                         + (Number(p.wins_gunspleef)||0)  + (Number(p.wins_runspleef)||0);
+        const totalPlays = (Number(p.plays_quadclaim)||0) + (Number(p.plays_memoryclaim)||0)
+                         + (Number(p.plays_gunspleef)||0) + (Number(p.plays_runspleef)||0)
                          + (Number(p.plays_chrono_overdrive)||0)
                          + (Number(p.plays_chrono_loot_extraction_2d)||0);
 
         const level   = xpToLevel(p.xp);
-        const streak  = Number(p.daily_login_streak)  || 0;
-        const best    = Number(p.best_login_streak)    || 0;
+        const streak  = Number(p.daily_login_streak) || 0;
+        const best    = Number(p.best_login_streak)  || 0;
         const cat     = apiCat();
-        const catLabel = cat === 'xp' ? 'XP' : cat.startsWith('wins') ? 'WINS' : 'PLAYS';
+        const catLbl  = cat === 'xp' ? 'XP' : cat.startsWith('wins') ? 'WINS' : 'PLAYS';
+        const earnedCount = achs.filter(a => !!a.earned_at).length;
 
         const winsBreakdown = ['quadclaim','memoryclaim','gunspleef','runspleef']
           .map(g => `<span class="gs"><span class="gs-name">${GAME_LABELS[g]} </span><span class="gs-val">${Number(p['wins_'+g])||0}</span></span>`)
@@ -563,45 +747,29 @@
         detailContentEl.innerHTML = `
           <div class="detail-hero">
             <div class="detail-name">${esc(username)}</div>
-            <div class="detail-sub">Level ${level}&nbsp;&nbsp;·&nbsp;&nbsp;<span class="hl">#${rank.toLocaleString()} ${catLabel}</span></div>
+            <div class="detail-sub">Level ${level}&nbsp;&nbsp;·&nbsp;&nbsp;<span class="hl">#${rank.toLocaleString()} ${catLbl}</span></div>
           </div>
 
           <div class="detail-section">
             <div class="section-title">STATS</div>
             <div class="stat-rows">
-              <div class="stat-row">
-                <div class="stat-lbl">TOTAL XP</div>
-                <div class="stat-val gold">${(Number(p.xp)||0).toLocaleString()}</div>
-              </div>
-              <div class="stat-row">
-                <div class="stat-lbl">TOTAL WINS</div>
-                <div class="stat-val">${totalWins.toLocaleString()}</div>
-              </div>
-              <div class="stat-row">
-                <div class="stat-lbl">TOTAL PLAYS</div>
-                <div class="stat-val">${totalPlays.toLocaleString()}</div>
-              </div>
-              <div class="stat-row">
-                <div class="stat-lbl">FAVORITE GAME</div>
-                <div class="stat-val">${esc(fmtGame(p.favorite_game))}</div>
-              </div>
-              <div class="stat-row">
-                <div class="stat-lbl">LOGIN STREAK</div>
-                <div class="stat-val">${streak > 0 ? '🔥 ' + streak + ' day' + (streak !== 1 ? 's' : '') : '—'}</div>
-              </div>
-              <div class="stat-row">
-                <div class="stat-lbl">BEST STREAK</div>
-                <div class="stat-val">${best > 0 ? best + ' day' + (best !== 1 ? 's' : '') : '—'}</div>
-              </div>
-              <div class="stat-row">
-                <div class="stat-lbl">LAST SEEN</div>
-                <div class="stat-val">${relTime(p.last_seen_at)}</div>
-              </div>
-              <div class="stat-row">
-                <div class="stat-lbl">MEMBER SINCE</div>
-                <div class="stat-val">${fmtDate(p.created_at)}</div>
-              </div>
+              <div class="stat-row"><div class="stat-lbl">TOTAL XP</div><div class="stat-val gold">${(Number(p.xp)||0).toLocaleString()}</div></div>
+              <div class="stat-row"><div class="stat-lbl">TOTAL WINS</div><div class="stat-val">${totalWins.toLocaleString()}</div></div>
+              <div class="stat-row"><div class="stat-lbl">TOTAL PLAYS</div><div class="stat-val">${totalPlays.toLocaleString()}</div></div>
+              <div class="stat-row"><div class="stat-lbl">FAVORITE GAME</div><div class="stat-val">${esc(fmtGame(p.favorite_game))}</div></div>
+              <div class="stat-row"><div class="stat-lbl">LOGIN STREAK</div><div class="stat-val">${streak > 0 ? '🔥 ' + streak + ' day' + (streak !== 1 ? 's' : '') : '—'}</div></div>
+              <div class="stat-row"><div class="stat-lbl">BEST STREAK</div><div class="stat-val">${best > 0 ? best + ' day' + (best !== 1 ? 's' : '') : '—'}</div></div>
+              <div class="stat-row"><div class="stat-lbl">LAST SEEN</div><div class="stat-val">${relTime(p.last_seen_at)}</div></div>
+              <div class="stat-row"><div class="stat-lbl">MEMBER SINCE</div><div class="stat-val">${fmtDate(p.created_at)}</div></div>
             </div>
+          </div>
+
+          <div class="detail-section" id="badgesSection">
+            <div class="section-title">
+              ACHIEVEMENTS
+              <span class="section-count">${earnedCount} / ${achs.length}</span>
+            </div>
+            <div class="badges"></div>
           </div>
 
           <div class="detail-section">
@@ -614,6 +782,9 @@
             <div class="game-breakdown">${playsBreakdown}</div>
           </div>
         `;
+
+        renderBadges(achs);
+
       } catch (err) {
         console.error('Detail fetch failed:', err);
         detailContentEl.innerHTML = '<div class="placeholder">FETCH ERROR</div>';
@@ -621,6 +792,7 @@
     }
 
     function closeDetail() {
+      hideTooltip();
       detailViewEl.classList.remove('active');
       listViewEl.classList.remove('hidden');
     }
@@ -661,11 +833,9 @@
       if (tab === currentTab) return;
       currentTab = tab;
       currentGame = '';
-
       document.querySelectorAll('.tab').forEach(t =>
         t.classList.toggle('active', t.dataset.tab === tab)
       );
-
       if (tab === 'xp') {
         gameFilterEl.classList.add('hidden');
       } else {
@@ -674,7 +844,6 @@
           p.classList.toggle('active', p.dataset.game === '')
         );
       }
-
       closeDetail();
       rowsWrapEl.classList.add('fading');
       await refresh();
@@ -689,11 +858,9 @@
     async function switchGame(game) {
       if (game === currentGame) return;
       currentGame = game;
-
       document.querySelectorAll('.gf-pill').forEach(p =>
         p.classList.toggle('active', p.dataset.game === game)
       );
-
       closeDetail();
       rowsWrapEl.classList.add('fading');
       await refresh();
@@ -722,9 +889,7 @@
         if (username) currentUsername = username;
         await refresh();
         startPolling();
-      } catch (err) {
-        console.error('Portals message handling failed:', err);
-      }
+      } catch (err) { console.error('Portals message handling failed:', err); }
     }
 
     window.handlePortalsMessage = handlePortalsMessage;
