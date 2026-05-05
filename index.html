@@ -70,16 +70,12 @@
       background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, transparent 100%);
       border-bottom: 1px solid rgba(255, 196, 0, 0.14);
     }
-
     .header-icon { font-size: 13px; line-height: 1; }
-
     .header-title {
       font-size: 11px;
       letter-spacing: 2.5px;
       color: var(--gold-1);
-      text-shadow:
-        0 1px 8px rgba(255, 196, 0, 0.55),
-        0 0 2px rgba(255, 240, 0, 0.20);
+      text-shadow: 0 1px 8px rgba(255, 196, 0, 0.55), 0 0 2px rgba(255, 240, 0, 0.20);
     }
 
     /* ── Tabs ──────────────────────────────────── */
@@ -103,24 +99,61 @@
       border: 1px solid rgba(255, 255, 255, 0.08);
       transition: color 120ms, border-color 120ms, background 120ms, box-shadow 120ms;
       font-family: inherit;
-      pointer-events: auto;
     }
-
     .tab:hover:not(.active) {
       color: rgba(255, 255, 255, 0.68);
-      border-color: rgba(255, 196, 0, 0.30);
+      border-color: rgba(255, 196, 0, 0.28);
     }
-
     .tab.active {
       color: #3d1a00;
       background: linear-gradient(180deg, #fff8bf 0%, #ffd64a 55%, #f2ae00 100%);
       border-color: transparent;
-      box-shadow:
-        0 2px 8px rgba(0, 0, 0, 0.22),
-        0 0 8px rgba(255, 216, 87, 0.38);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.20), 0 0 7px rgba(255,216,87,0.35);
     }
 
-    /* ── Rows ──────────────────────────────────── */
+    /* ── Game filter ───────────────────────────── */
+    .game-filter {
+      display: flex;
+      gap: 4px;
+      padding: 5px 10px 5px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      border-bottom: 1px solid rgba(255, 196, 0, 0.07);
+    }
+    .game-filter::-webkit-scrollbar { display: none; }
+    .game-filter.hidden { display: none; }
+
+    .gf-pill {
+      flex-shrink: 0;
+      padding: 3px 9px 2px;
+      font-size: 7px;
+      letter-spacing: 0.8px;
+      border-radius: 999px;
+      cursor: pointer;
+      color: rgba(255, 255, 255, 0.35);
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      transition: color 100ms, border-color 100ms, background 100ms, box-shadow 100ms;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .gf-pill:hover:not(.active) {
+      color: rgba(255, 255, 255, 0.65);
+      border-color: rgba(255, 196, 0, 0.25);
+    }
+    .gf-pill.active {
+      color: #3d1a00;
+      background: linear-gradient(180deg, #ffe88a 0%, #ffc400 100%);
+      border-color: transparent;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.18);
+    }
+
+    /* ── Main area ─────────────────────────────── */
+    .main-area { position: relative; overflow: hidden; }
+
+    /* ── List view ─────────────────────────────── */
+    .list-view.hidden { display: none; }
+
     .rows-wrap { transition: opacity 140ms ease; }
     .rows-wrap.fading { opacity: 0; }
 
@@ -132,15 +165,17 @@
       height: var(--row-h);
       padding: 0 12px;
       gap: 8px;
+      cursor: pointer;
+      transition: background 120ms;
     }
-
     .row:nth-child(even) { background: rgba(255, 255, 255, 0.022); }
-
+    .row:hover { background: rgba(255, 196, 0, 0.07); }
     .row.is-me {
       background: rgba(255, 196, 0, 0.09);
       border-left: 2px solid var(--gold-2);
       padding-left: 10px;
     }
+    .row.is-me:hover { background: rgba(255, 196, 0, 0.14); }
 
     .row-rank {
       font-size: 10px;
@@ -149,7 +184,6 @@
       flex-shrink: 0;
       line-height: 1;
     }
-
     .rank-1 { color: #ffd700; text-shadow: 0 0 10px rgba(255,210,0,0.65); }
     .rank-2 { color: #c8c8c8; text-shadow: 0 0 6px rgba(200,200,200,0.40); }
     .rank-3 { color: #cd7f32; text-shadow: 0 0 7px rgba(205,127,50,0.50); }
@@ -162,13 +196,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
-    .you-tag {
-      color: var(--gold-3);
-      font-size: 7px;
-      margin-left: 4px;
-      opacity: 0.85;
-    }
+    .you-tag { color: var(--gold-3); font-size: 7px; margin-left: 4px; opacity: 0.85; }
 
     .row-value {
       font-size: 8.5px;
@@ -176,6 +204,7 @@
       color: var(--gold-4);
       flex-shrink: 0;
     }
+    .row-chevron { color: rgba(255,255,255,0.18); font-size: 11px; flex-shrink: 0; }
 
     /* ── Own rank outside top 10 ───────────────── */
     .own-rank-sep {
@@ -187,20 +216,21 @@
         transparent 4px, transparent 8px
       );
     }
-
     .own-rank-row {
       display: flex;
       align-items: center;
       height: calc(var(--row-h) - 2px);
       padding: 0 10px;
       gap: 8px;
-      background: rgba(255, 196, 0, 0.07);
-      border-left: 2px solid rgba(243, 176, 4, 0.50);
+      background: rgba(255,196,0,0.07);
+      border-left: 2px solid rgba(243,176,4,0.50);
       margin-bottom: 2px;
+      cursor: pointer;
+      transition: background 120ms;
     }
-
+    .own-rank-row:hover { background: rgba(255,196,0,0.12); }
     .own-rank-row .row-rank  { color: rgba(255,255,255,0.38); font-size: 9px; }
-    .own-rank-row .row-name  { font-size: 9px; color: var(--gold-4); }
+    .own-rank-row .row-name  { font-size: 9px; color: var(--gold-4); flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .own-rank-row .row-value { font-size: 8.5px; color: var(--gold-4); }
 
     /* ── Placeholder ───────────────────────────── */
@@ -213,6 +243,78 @@
       letter-spacing: 1.5px;
       color: rgba(255,255,255,0.22);
     }
+
+    /* ── Detail view ───────────────────────────── */
+    .detail-view { display: none; }
+    .detail-view.active { display: block; }
+
+    .detail-back {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 7px 12px 6px;
+      font-size: 8px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.40);
+      cursor: pointer;
+      border-bottom: 1px solid rgba(255,196,0,0.08);
+      transition: color 120ms;
+    }
+    .detail-back:hover { color: var(--gold-4); }
+    .detail-back-arrow { font-size: 11px; line-height: 1; }
+
+    .detail-hero {
+      padding: 10px 14px 9px;
+      border-bottom: 1px solid rgba(255,196,0,0.10);
+    }
+    .detail-name {
+      font-size: 14px;
+      color: var(--gold-1);
+      text-shadow: 0 1px 6px rgba(255,196,0,0.40);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.1;
+    }
+    .detail-sub {
+      font-size: 8px;
+      color: rgba(255,255,255,0.38);
+      margin-top: 4px;
+      letter-spacing: 0.5px;
+    }
+    .detail-sub .hl { color: var(--gold-3); }
+
+    .detail-section {
+      padding: 7px 14px 6px;
+      border-bottom: 1px solid rgba(255,196,0,0.07);
+    }
+    .detail-section:last-child { border-bottom: none; padding-bottom: 8px; }
+
+    .section-title {
+      font-size: 7px;
+      letter-spacing: 1.5px;
+      color: rgba(255,196,0,0.45);
+      margin-bottom: 6px;
+    }
+
+    .stat-rows { display: flex; flex-direction: column; gap: 3px; }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .stat-lbl { font-size: 7.5px; color: rgba(255,255,255,0.35); letter-spacing: 0.3px; }
+    .stat-val { font-size: 8.5px; color: var(--gold-4); }
+    .stat-val.gold { color: var(--gold-1); }
+
+    .game-breakdown {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 3px 10px;
+    }
+    .gs { font-size: 7.5px; }
+    .gs-name { color: rgba(255,255,255,0.28); }
+    .gs-val  { color: var(--gold-4); }
 
     /* ── Footer ────────────────────────────────── */
     .footer {
@@ -236,15 +338,38 @@
     </div>
 
     <div class="tabs">
-      <div class="tab active" data-cat="xp">XP</div>
-      <div class="tab" data-cat="wins">WINS</div>
-      <div class="tab" data-cat="plays">PLAYS</div>
+      <div class="tab active" data-tab="xp">XP</div>
+      <div class="tab" data-tab="wins">WINS</div>
+      <div class="tab" data-tab="plays">PLAYS</div>
     </div>
 
-    <div id="rowsWrap" class="rows-wrap">
-      <div id="rows" class="rows">
-        <div class="placeholder">LOADING…</div>
+    <div id="gameFilter" class="game-filter hidden">
+      <div class="gf-pill active" data-game="">ALL</div>
+      <div class="gf-pill" data-game="quadclaim">QUAD</div>
+      <div class="gf-pill" data-game="memoryclaim">MEMORY</div>
+      <div class="gf-pill" data-game="gunspleef">GUN</div>
+      <div class="gf-pill" data-game="runspleef">RUN</div>
+      <div class="gf-pill" data-game="chrono_overdrive">C.OD</div>
+      <div class="gf-pill" data-game="chrono_loot_extraction_2d">C.LE</div>
+    </div>
+
+    <div class="main-area">
+
+      <div id="listView" class="list-view">
+        <div id="rowsWrap" class="rows-wrap">
+          <div id="rows" class="rows">
+            <div class="placeholder">LOADING…</div>
+          </div>
+        </div>
       </div>
+
+      <div id="detailView" class="detail-view">
+        <div id="detailBack" class="detail-back">
+          <span class="detail-back-arrow">←</span> BACK
+        </div>
+        <div id="detailContent"></div>
+      </div>
+
     </div>
 
     <div id="footer" class="footer">—</div>
@@ -252,78 +377,126 @@
   </div>
 
   <script>
+    /* ── Constants ──────────────────────────────────────────── */
     const SUPABASE_URL = 'https://tpdedcjccygpwkofdyqg.supabase.co';
     const SUPABASE_KEY = 'sb_publishable_kYGFYlXrQHt17-uihwy7tA_CxkbQYNH';
     const POLL_MS = 60_000;
 
-    let currentCategory = 'xp';
-    let currentUsername  = null;
-    let pollHandle       = null;
-    let isFetching       = false;
+    const BASE_XP = 100, GROWTH = 1.18, ROUNDING = 5, MIN_STEP = 10;
+    const xpCache = [0, BASE_XP];
 
-    const rowsWrap = document.getElementById('rowsWrap');
-    const rowsEl   = document.getElementById('rows');
-    const footerEl = document.getElementById('footer');
+    const GAME_LABELS = {
+      quadclaim:                 'Quadclaim',
+      memoryclaim:               'Memoryclaim',
+      gunspleef:                 'Gunspleef',
+      runspleef:                 'Runspleef',
+      chrono_overdrive:          'Chrono OD',
+      chrono_loot_extraction_2d: 'Chrono LE',
+    };
 
-    // ── Supabase ──────────────────────────────────────────────
+    /* ── State ──────────────────────────────────────────────── */
+    let currentTab      = 'xp';
+    let currentGame     = '';
+    let currentUsername = null;
+    let pollHandle      = null;
+    let isFetching      = false;
 
+    /* ── DOM ────────────────────────────────────────────────── */
+    const gameFilterEl    = document.getElementById('gameFilter');
+    const listViewEl      = document.getElementById('listView');
+    const rowsWrapEl      = document.getElementById('rowsWrap');
+    const rowsEl          = document.getElementById('rows');
+    const detailViewEl    = document.getElementById('detailView');
+    const detailBackEl    = document.getElementById('detailBack');
+    const detailContentEl = document.getElementById('detailContent');
+    const footerEl        = document.getElementById('footer');
+
+    /* ── Supabase ───────────────────────────────────────────── */
     function buildHeaders() {
       return { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY };
     }
 
     async function callRpc(fn, body) {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
-        method: 'POST',
-        headers: buildHeaders(),
-        body: JSON.stringify(body),
-        cache: 'no-store'
+        method: 'POST', headers: buildHeaders(),
+        body: JSON.stringify(body), cache: 'no-store'
       });
       const text = await res.text();
-      let data;
-      try { data = text ? JSON.parse(text) : null; } catch { data = text; }
+      let data; try { data = text ? JSON.parse(text) : null; } catch { data = text; }
       if (!res.ok) throw new Error((data && data.message) || res.statusText);
       return data;
     }
 
-    // ── Format helpers ────────────────────────────────────────
+    /* ── Level math ─────────────────────────────────────────── */
+    function xpForLevel(l) {
+      if (l <= 1) return BASE_XP;
+      if (xpCache[l]) return xpCache[l];
+      for (let i = xpCache.length; i <= l; i++) {
+        const raw = BASE_XP * Math.pow(GROWTH, i - 1);
+        const rounded = Math.round(raw / ROUNDING) * ROUNDING;
+        xpCache[i] = Math.max(rounded, xpCache[i - 1] + MIN_STEP);
+      }
+      return xpCache[l];
+    }
+    function xpToLevel(totalXp) {
+      const xp = Math.max(0, Number(totalXp) || 0);
+      let level = 1, rem = xp, need = xpForLevel(level);
+      while (rem >= need) { rem -= need; level++; need = xpForLevel(level); }
+      return level;
+    }
+
+    /* ── Helpers ────────────────────────────────────────────── */
+    function apiCat() {
+      if (currentTab === 'xp') return 'xp';
+      return currentGame ? `${currentTab}_${currentGame}` : currentTab;
+    }
 
     function fmtValue(val, cat) {
       const n = Number(val) || 0;
       const s = n.toLocaleString();
-      if (cat === 'xp')   return s + ' XP';
-      if (cat === 'wins') return s + ' W';
+      if (!cat || cat === 'xp')        return s + ' XP';
+      if (cat.startsWith('wins'))      return s + ' W';
       return s + ' P';
     }
 
     function esc(str) {
-      return String(str || '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+      return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
     }
 
     function rankIcon(n) {
-      if (n === 1) return '🥇';
-      if (n === 2) return '🥈';
-      if (n === 3) return '🥉';
+      if (n === 1) return '🥇'; if (n === 2) return '🥈'; if (n === 3) return '🥉';
       return n;
     }
-
     function rankCls(n) {
-      if (n === 1) return 'rank-1';
-      if (n === 2) return 'rank-2';
-      if (n === 3) return 'rank-3';
+      if (n === 1) return 'rank-1'; if (n === 2) return 'rank-2'; if (n === 3) return 'rank-3';
       return 'rank-other';
     }
 
-    // ── Render ────────────────────────────────────────────────
+    function relTime(iso) {
+      if (!iso) return '—';
+      const diff = Date.now() - new Date(iso).getTime();
+      const m = Math.floor(diff / 60000);
+      if (m < 1)  return 'just now';
+      if (m < 60) return `${m}m ago`;
+      const h = Math.floor(m / 60);
+      if (h < 24) return `${h}h ago`;
+      return `${Math.floor(h / 24)}d ago`;
+    }
 
-    function render(rows, ownRank) {
+    function fmtDate(iso) {
+      if (!iso) return '—';
+      return new Date(iso).toLocaleDateString([], { month: 'short', year: 'numeric' });
+    }
+
+    function fmtGame(key) { return GAME_LABELS[key] || key || '—'; }
+
+    /* ── Render list ────────────────────────────────────────── */
+    function renderRows(rows, ownRank) {
       if (!rows || rows.length === 0) {
         rowsEl.innerHTML = '<div class="placeholder">NO DATA YET</div>';
         return;
       }
-
+      const cat = apiCat();
       const meInTop = rows.some(r => r.username === currentUsername);
       let html = '';
 
@@ -331,41 +504,143 @@
         const rank = Number(r.rank);
         const isMe = r.username === currentUsername;
         html += `
-          <div class="row${isMe ? ' is-me' : ''}">
+          <div class="row${isMe ? ' is-me' : ''}" data-username="${esc(r.username)}" data-rank="${rank}">
             <div class="row-rank ${rankCls(rank)}">${rankIcon(rank)}</div>
             <div class="row-name">${esc(r.username)}${isMe ? '<span class="you-tag">(you)</span>' : ''}</div>
-            <div class="row-value">${fmtValue(r.value, currentCategory)}</div>
+            <div class="row-value">${fmtValue(r.value, cat)}</div>
+            <div class="row-chevron">›</div>
           </div>`;
       }
 
       if (!meInTop && ownRank && currentUsername) {
         html += `
           <div class="own-rank-sep"></div>
-          <div class="own-rank-row">
+          <div class="own-rank-row" data-username="${esc(currentUsername)}" data-rank="${Number(ownRank.rank)}">
             <div class="row-rank">${Number(ownRank.rank).toLocaleString()}</div>
             <div class="row-name">${esc(currentUsername)}<span class="you-tag">(you)</span></div>
-            <div class="row-value">${fmtValue(ownRank.value, currentCategory)}</div>
+            <div class="row-value">${fmtValue(ownRank.value, cat)}</div>
           </div>`;
       }
 
       rowsEl.innerHTML = html;
+      rowsEl.querySelectorAll('[data-username]').forEach(el => {
+        el.addEventListener('click', () => openDetail(el.dataset.username, Number(el.dataset.rank)));
+      });
     }
 
-    // ── Fetch & refresh ───────────────────────────────────────
+    /* ── Detail view ────────────────────────────────────────── */
+    async function openDetail(username, rank) {
+      listViewEl.classList.add('hidden');
+      detailViewEl.classList.add('active');
+      detailContentEl.innerHTML = '<div class="placeholder">LOADING…</div>';
 
+      try {
+        const raw = await callRpc('get_player_stats', { p_username: username });
+        const p = Array.isArray(raw) ? raw[0] : raw;
+        if (!p) { detailContentEl.innerHTML = '<div class="placeholder">NOT FOUND</div>'; return; }
+
+        const totalWins = (Number(p.wins_quadclaim)||0) + (Number(p.wins_memoryclaim)||0)
+                        + (Number(p.wins_gunspleef)||0)  + (Number(p.wins_runspleef)||0);
+        const totalPlays = (Number(p.plays_quadclaim)||0)   + (Number(p.plays_memoryclaim)||0)
+                         + (Number(p.plays_gunspleef)||0)   + (Number(p.plays_runspleef)||0)
+                         + (Number(p.plays_chrono_overdrive)||0)
+                         + (Number(p.plays_chrono_loot_extraction_2d)||0);
+
+        const level   = xpToLevel(p.xp);
+        const streak  = Number(p.daily_login_streak)  || 0;
+        const best    = Number(p.best_login_streak)    || 0;
+        const cat     = apiCat();
+        const catLabel = cat === 'xp' ? 'XP' : cat.startsWith('wins') ? 'WINS' : 'PLAYS';
+
+        const winsBreakdown = ['quadclaim','memoryclaim','gunspleef','runspleef']
+          .map(g => `<span class="gs"><span class="gs-name">${GAME_LABELS[g]} </span><span class="gs-val">${Number(p['wins_'+g])||0}</span></span>`)
+          .join('');
+
+        const playsBreakdown = Object.keys(GAME_LABELS)
+          .map(g => `<span class="gs"><span class="gs-name">${GAME_LABELS[g]} </span><span class="gs-val">${Number(p['plays_'+g])||0}</span></span>`)
+          .join('');
+
+        detailContentEl.innerHTML = `
+          <div class="detail-hero">
+            <div class="detail-name">${esc(username)}</div>
+            <div class="detail-sub">Level ${level}&nbsp;&nbsp;·&nbsp;&nbsp;<span class="hl">#${rank.toLocaleString()} ${catLabel}</span></div>
+          </div>
+
+          <div class="detail-section">
+            <div class="section-title">STATS</div>
+            <div class="stat-rows">
+              <div class="stat-row">
+                <div class="stat-lbl">TOTAL XP</div>
+                <div class="stat-val gold">${(Number(p.xp)||0).toLocaleString()}</div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-lbl">TOTAL WINS</div>
+                <div class="stat-val">${totalWins.toLocaleString()}</div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-lbl">TOTAL PLAYS</div>
+                <div class="stat-val">${totalPlays.toLocaleString()}</div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-lbl">FAVORITE GAME</div>
+                <div class="stat-val">${esc(fmtGame(p.favorite_game))}</div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-lbl">LOGIN STREAK</div>
+                <div class="stat-val">${streak > 0 ? '🔥 ' + streak + ' day' + (streak !== 1 ? 's' : '') : '—'}</div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-lbl">BEST STREAK</div>
+                <div class="stat-val">${best > 0 ? best + ' day' + (best !== 1 ? 's' : '') : '—'}</div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-lbl">LAST SEEN</div>
+                <div class="stat-val">${relTime(p.last_seen_at)}</div>
+              </div>
+              <div class="stat-row">
+                <div class="stat-lbl">MEMBER SINCE</div>
+                <div class="stat-val">${fmtDate(p.created_at)}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="detail-section">
+            <div class="section-title">WINS BY GAME</div>
+            <div class="game-breakdown">${winsBreakdown}</div>
+          </div>
+
+          <div class="detail-section">
+            <div class="section-title">PLAYS BY GAME</div>
+            <div class="game-breakdown">${playsBreakdown}</div>
+          </div>
+        `;
+      } catch (err) {
+        console.error('Detail fetch failed:', err);
+        detailContentEl.innerHTML = '<div class="placeholder">FETCH ERROR</div>';
+      }
+    }
+
+    function closeDetail() {
+      detailViewEl.classList.remove('active');
+      listViewEl.classList.remove('hidden');
+    }
+
+    detailBackEl.addEventListener('click', closeDetail);
+
+    /* ── Fetch & refresh ────────────────────────────────────── */
     async function refresh() {
       if (isFetching) return;
       isFetching = true;
       try {
+        const cat = apiCat();
         const [rows, ownRankRaw] = await Promise.all([
-          callRpc('get_leaderboard', { p_category: currentCategory, p_limit: 10 }),
+          callRpc('get_leaderboard', { p_category: cat, p_limit: 10 }),
           currentUsername
-            ? callRpc('get_player_rank', { p_username: currentUsername, p_category: currentCategory })
-                .then(d => Array.isArray(d) ? d[0] : d)
-                .catch(() => null)
+            ? callRpc('get_player_rank', { p_username: currentUsername, p_category: cat })
+                .then(d => Array.isArray(d) ? d[0] : d).catch(() => null)
             : Promise.resolve(null)
         ]);
-        render(Array.isArray(rows) ? rows : [], ownRankRaw || null);
+        renderRows(Array.isArray(rows) ? rows : [], ownRankRaw || null);
         const t = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         footerEl.textContent = 'UPDATED ' + t;
       } catch (err) {
@@ -381,37 +656,61 @@
       pollHandle = setInterval(refresh, POLL_MS);
     }
 
-    // ── Tab switching ─────────────────────────────────────────
+    /* ── Tab switching ──────────────────────────────────────── */
+    async function switchTab(tab) {
+      if (tab === currentTab) return;
+      currentTab = tab;
+      currentGame = '';
 
-    async function switchTab(cat) {
-      if (cat === currentCategory) return;
-      currentCategory = cat;
       document.querySelectorAll('.tab').forEach(t =>
-        t.classList.toggle('active', t.dataset.cat === cat)
+        t.classList.toggle('active', t.dataset.tab === tab)
       );
-      rowsWrap.classList.add('fading');
+
+      if (tab === 'xp') {
+        gameFilterEl.classList.add('hidden');
+      } else {
+        gameFilterEl.classList.remove('hidden');
+        document.querySelectorAll('.gf-pill').forEach(p =>
+          p.classList.toggle('active', p.dataset.game === '')
+        );
+      }
+
+      closeDetail();
+      rowsWrapEl.classList.add('fading');
       await refresh();
-      rowsWrap.classList.remove('fading');
+      rowsWrapEl.classList.remove('fading');
     }
 
     document.querySelectorAll('.tab').forEach(tab => {
-      tab.addEventListener('click', () => switchTab(tab.dataset.cat));
+      tab.addEventListener('click', () => switchTab(tab.dataset.tab));
     });
 
-    // ── Portals message ───────────────────────────────────────
+    /* ── Game filter ────────────────────────────────────────── */
+    async function switchGame(game) {
+      if (game === currentGame) return;
+      currentGame = game;
 
+      document.querySelectorAll('.gf-pill').forEach(p =>
+        p.classList.toggle('active', p.dataset.game === game)
+      );
+
+      closeDetail();
+      rowsWrapEl.classList.add('fading');
+      await refresh();
+      rowsWrapEl.classList.remove('fading');
+    }
+
+    document.querySelectorAll('.gf-pill').forEach(pill => {
+      pill.addEventListener('click', () => switchGame(pill.dataset.game));
+    });
+
+    /* ── Portals message ────────────────────────────────────── */
     function extractUsername(raw) {
       try {
         const msg = String(raw || '').trim();
-        try {
-          const p = JSON.parse(msg);
-          if (p && p.username) return String(p.username).trim();
-        } catch {}
-        const normalised = msg.replace(/=\s*(?=[\[{"'\-\dtruefalsen])/g, ':');
-        try {
-          const p = JSON.parse(normalised);
-          if (p && p.username) return String(p.username).trim();
-        } catch {}
+        try { const p = JSON.parse(msg); if (p && p.username) return String(p.username).trim(); } catch {}
+        const norm = msg.replace(/=\s*(?=[\[{"'\-\dtruefalsen])/g, ':');
+        try { const p = JSON.parse(norm); if (p && p.username) return String(p.username).trim(); } catch {}
         const m = msg.match(/username\s*[=:]\s*["']?([^\s"';,}]+)/i);
         return m ? m[1].trim() : null;
       } catch { return null; }
@@ -430,7 +729,7 @@
 
     window.handlePortalsMessage = handlePortalsMessage;
 
-    // Boot
+    /* ── Boot ───────────────────────────────────────────────── */
     refresh();
     startPolling();
     PortalsSdk.setMessageListener(msg => handlePortalsMessage(msg));
