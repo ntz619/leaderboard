@@ -239,6 +239,13 @@
       letter-spacing: 1.5px;
       color: rgba(255,255,255,0.22);
     }
+    .placeholder-sm {
+      font-size: 7.5px;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.20);
+      padding: 8px 0 4px;
+      text-align: center;
+    }
 
     /* ── Detail view ───────────────────────────── */
     .detail-view { display: none; }
@@ -337,44 +344,32 @@
     .badge.rarity-legendary {
       background: linear-gradient(145deg, rgba(90,58,0,0.90) 0%, rgba(55,35,0,0.95) 100%);
       border-color: #ffd700;
-      box-shadow:
-        0 0 10px rgba(255, 210, 0, 0.45),
-        inset 0 1px 0 rgba(255,255,255,0.10);
+      box-shadow: 0 0 10px rgba(255,210,0,0.45), inset 0 1px 0 rgba(255,255,255,0.10);
     }
     .badge.rarity-legendary:hover {
-      box-shadow: 0 0 16px rgba(255, 210, 0, 0.70), inset 0 1px 0 rgba(255,255,255,0.10);
+      box-shadow: 0 0 16px rgba(255,210,0,0.70), inset 0 1px 0 rgba(255,255,255,0.10);
     }
-
     .badge.rarity-epic {
       background: linear-gradient(145deg, rgba(55,0,90,0.90) 0%, rgba(35,0,60,0.95) 100%);
       border-color: #c77dff;
-      box-shadow:
-        0 0 9px rgba(160, 80, 255, 0.45),
-        inset 0 1px 0 rgba(255,255,255,0.08);
+      box-shadow: 0 0 9px rgba(160,80,255,0.45), inset 0 1px 0 rgba(255,255,255,0.08);
     }
     .badge.rarity-epic:hover {
-      box-shadow: 0 0 14px rgba(160, 80, 255, 0.70), inset 0 1px 0 rgba(255,255,255,0.08);
+      box-shadow: 0 0 14px rgba(160,80,255,0.70), inset 0 1px 0 rgba(255,255,255,0.08);
     }
-
     .badge.rarity-rare {
       background: linear-gradient(145deg, rgba(0,35,90,0.90) 0%, rgba(0,22,60,0.95) 100%);
       border-color: #4da6ff;
-      box-shadow:
-        0 0 8px rgba(77, 166, 255, 0.40),
-        inset 0 1px 0 rgba(255,255,255,0.07);
+      box-shadow: 0 0 8px rgba(77,166,255,0.40), inset 0 1px 0 rgba(255,255,255,0.07);
     }
     .badge.rarity-rare:hover {
-      box-shadow: 0 0 12px rgba(77, 166, 255, 0.65), inset 0 1px 0 rgba(255,255,255,0.07);
+      box-shadow: 0 0 12px rgba(77,166,255,0.65), inset 0 1px 0 rgba(255,255,255,0.07);
     }
-
     .badge.rarity-common {
       background: rgba(255,255,255,0.06);
       border-color: rgba(255,255,255,0.16);
     }
-    .badge.rarity-common:hover {
-      box-shadow: 0 0 7px rgba(255,255,255,0.15);
-    }
-
+    .badge.rarity-common:hover { box-shadow: 0 0 7px rgba(255,255,255,0.15); }
     .badge.locked {
       opacity: 0.15;
       filter: grayscale(1);
@@ -390,48 +385,101 @@
       max-width: 190px;
       padding: 7px 10px 6px;
       background: linear-gradient(180deg, rgba(58,37,14,0.99) 0%, rgba(38,23,8,1.00) 100%);
-      border: 1px solid rgba(255, 196, 0, 0.30);
+      border: 1px solid rgba(255,196,0,0.30);
       border-radius: 5px;
-      box-shadow:
-        0 6px 18px rgba(0,0,0,0.60),
-        0 0 0 1px rgba(0,0,0,0.25);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.60), 0 0 0 1px rgba(0,0,0,0.25);
       pointer-events: none;
       font-family: 'ObelixPro', Arial, sans-serif;
     }
-    .tt-rarity {
-      font-size: 6.5px;
-      letter-spacing: 1.2px;
-      margin-bottom: 3px;
-      text-transform: uppercase;
-    }
+    .tt-rarity { font-size: 6.5px; letter-spacing: 1.2px; margin-bottom: 3px; text-transform: uppercase; }
     .tt-rarity.legendary { color: #ffd700; }
     .tt-rarity.epic      { color: #c77dff; }
     .tt-rarity.rare      { color: #4da6ff; }
     .tt-rarity.common    { color: rgba(255,255,255,0.40); }
-    .tt-name {
+    .tt-name  { font-size: 9px; color: var(--gold-1); letter-spacing: 0.4px; margin-bottom: 3px; line-height: 1.2; }
+    .tt-desc  { font-size: 7.5px; color: rgba(255,255,255,0.55); line-height: 1.35; }
+    .tt-date  { font-size: 6.5px; color: rgba(255,196,0,0.40); margin-top: 4px; letter-spacing: 0.3px; }
+    .tt-locked { font-size: 7px; color: rgba(255,255,255,0.25); margin-top: 3px; letter-spacing: 0.5px; }
+
+    /* ── Quest cards ───────────────────────────── */
+    .quests-view { display: none; }
+    .quests-view.active { display: block; padding-bottom: 8px; }
+
+    .quest-group-label {
+      font-size: 7px;
+      letter-spacing: 1.5px;
+      color: rgba(255, 196, 0, 0.45);
+      padding: 9px 14px 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .quest-timer {
+      font-size: 6.5px;
+      color: rgba(255, 255, 255, 0.22);
+      letter-spacing: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .quest-card {
+      margin: 0 10px 6px;
+      padding: 9px 10px 8px;
+      background: rgba(255, 255, 255, 0.033);
+      border-radius: 5px;
+      border: 1px solid rgba(255, 196, 0, 0.09);
+      border-left: 3px solid rgba(255, 196, 0, 0.38);
+    }
+    .quest-card.weekly { border-left-color: rgba(199, 125, 255, 0.55); }
+    .quest-card.done {
+      border-left-color: rgba(80, 220, 120, 0.70);
+      background: rgba(80, 220, 120, 0.035);
+    }
+
+    .quest-top { display: flex; align-items: flex-start; gap: 8px; }
+    .quest-icon { font-size: 20px; line-height: 1; flex-shrink: 0; padding-top: 1px; }
+    .quest-meta { flex: 1; min-width: 0; }
+    .quest-title {
       font-size: 9px;
       color: var(--gold-1);
-      letter-spacing: 0.4px;
-      margin-bottom: 3px;
       line-height: 1.2;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .tt-desc {
+    .quest-desc { font-size: 7px; color: rgba(255,255,255,0.35); line-height: 1.2; }
+    .quest-xp {
       font-size: 7.5px;
-      color: rgba(255,255,255,0.55);
-      line-height: 1.35;
+      color: var(--gold-3);
+      flex-shrink: 0;
+      white-space: nowrap;
+      align-self: center;
+      padding-left: 4px;
     }
-    .tt-date {
-      font-size: 6.5px;
-      color: rgba(255, 196, 0, 0.40);
-      margin-top: 4px;
-      letter-spacing: 0.3px;
+
+    .quest-bar-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 7px;
     }
-    .tt-locked {
-      font-size: 7px;
-      color: rgba(255,255,255,0.25);
-      margin-top: 3px;
-      letter-spacing: 0.5px;
+    .quest-track {
+      flex: 1;
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 999px;
+      overflow: hidden;
     }
+    .quest-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--gold-3), var(--gold-1));
+      transition: width 400ms ease;
+      min-width: 0;
+    }
+    .quest-fill.done { background: linear-gradient(90deg, #3ecb70, #7df5a0); }
+    .quest-prog { font-size: 6.5px; color: rgba(255,255,255,0.28); white-space: nowrap; font-variant-numeric: tabular-nums; }
+    .quest-check { font-size: 6.5px; letter-spacing: 0.5px; color: #7df5a0; flex-shrink: 0; }
 
     /* ── Footer ────────────────────────────────── */
     .footer {
@@ -458,6 +506,7 @@
       <div class="tab active" data-tab="xp">XP</div>
       <div class="tab" data-tab="wins">WINS</div>
       <div class="tab" data-tab="plays">PLAYS</div>
+      <div class="tab" data-tab="quests">QUESTS</div>
     </div>
 
     <div id="gameFilter" class="game-filter hidden">
@@ -485,6 +534,11 @@
           <span class="detail-back-arrow">←</span> BACK
         </div>
         <div id="detailContent"></div>
+      </div>
+
+      <!-- Quests tab view -->
+      <div id="questsView" class="quests-view">
+        <div id="questsContent"></div>
       </div>
 
     </div>
@@ -529,6 +583,8 @@
     const detailViewEl    = document.getElementById('detailView');
     const detailBackEl    = document.getElementById('detailBack');
     const detailContentEl = document.getElementById('detailContent');
+    const questsViewEl    = document.getElementById('questsView');
+    const questsContentEl = document.getElementById('questsContent');
     const footerEl        = document.getElementById('footer');
     const tooltipEl       = document.getElementById('tooltip');
 
@@ -602,6 +658,19 @@
     }
     function fmtGame(key) { return GAME_LABELS[key] || key || '—'; }
 
+    function formatTimeLeft(isoStr) {
+      if (!isoStr) return '';
+      const ms = new Date(isoStr).getTime() - Date.now();
+      if (ms <= 0) return 'expired';
+      const totalMins = Math.floor(ms / 60000);
+      const days  = Math.floor(totalMins / 1440);
+      const hours = Math.floor((totalMins % 1440) / 60);
+      const mins  = totalMins % 60;
+      if (days > 0)  return `${days}d ${hours}h`;
+      if (hours > 0) return `${hours}h ${mins}m`;
+      return `${mins}m`;
+    }
+
     /* ── Tooltip ────────────────────────────────────────────── */
     function positionTooltip(cx, cy) {
       tooltipEl.style.visibility = 'hidden';
@@ -631,6 +700,78 @@
       positionTooltip(e.clientX, e.clientY);
     }
     function hideTooltip() { tooltipEl.style.display = 'none'; }
+
+    /* ── Quest card rendering ───────────────────────────────── */
+    function questCardHtml(q) {
+      const prog   = Number(q.progress)     || 0;
+      const target = Number(q.target_value) || 1;
+      const done   = !!q.completed;
+      const pct    = Math.min(100, Math.round((prog / target) * 100));
+      // Only render progress bar when we have player context (get_player_quests returns `progress`)
+      const hasCtx = q.progress !== undefined && q.progress !== null;
+
+      return `
+        <div class="quest-card ${q.quest_type}${done ? ' done' : ''}">
+          <div class="quest-top">
+            <div class="quest-icon">${esc(q.icon)}</div>
+            <div class="quest-meta">
+              <div class="quest-title">${esc(q.title)}</div>
+              <div class="quest-desc">${esc(q.description)}</div>
+            </div>
+            <div class="quest-xp">+${Number(q.xp_reward).toLocaleString()} XP</div>
+          </div>
+          ${hasCtx ? `
+            <div class="quest-bar-row">
+              <div class="quest-track">
+                <div class="quest-fill${done ? ' done' : ''}" style="width:${pct}%"></div>
+              </div>
+              <div class="quest-prog">${prog.toLocaleString()}/${target.toLocaleString()}</div>
+              ${done ? '<div class="quest-check">✓ DONE</div>' : ''}
+            </div>` : ''}
+        </div>`;
+    }
+
+    function renderQuestCards(quests) {
+      const weekly = quests.filter(q => q.quest_type === 'weekly');
+      const daily  = quests.filter(q => q.quest_type === 'daily');
+      let html = '';
+
+      if (weekly.length) {
+        html += `<div class="quest-group-label">WEEKLY QUESTS
+          <span class="quest-timer">Resets in ${esc(formatTimeLeft(weekly[0].active_until))}</span>
+        </div>`;
+        for (const q of weekly) html += questCardHtml(q);
+      }
+      if (daily.length) {
+        html += `<div class="quest-group-label">DAILY QUESTS
+          <span class="quest-timer">Resets in ${esc(formatTimeLeft(daily[0].active_until))}</span>
+        </div>`;
+        for (const q of daily) html += questCardHtml(q);
+      }
+
+      return html || '<div class="placeholder">NO ACTIVE QUESTS</div>';
+    }
+
+    /* ── Quests tab loader ──────────────────────────────────── */
+    async function loadQuests() {
+      questsContentEl.innerHTML = '<div class="placeholder">LOADING…</div>';
+      try {
+        let quests;
+        if (currentUsername) {
+          // Personalised: shows progress bars
+          const raw = await callRpc('get_player_quests', { p_username: currentUsername });
+          quests = Array.isArray(raw) ? raw : [];
+        } else {
+          // Anonymous: shows quest info only
+          const raw = await callRpc('get_active_quests', {});
+          quests = Array.isArray(raw) ? raw : [];
+        }
+        questsContentEl.innerHTML = renderQuestCards(quests);
+      } catch (err) {
+        console.error('Quest fetch failed:', err);
+        questsContentEl.innerHTML = '<div class="placeholder">FETCH ERROR</div>';
+      }
+    }
 
     /* ── Render list ────────────────────────────────────────── */
     function renderRows(rows, ownRank) {
@@ -673,7 +814,6 @@
       const container = document.getElementById('badgesSection');
       if (!container) return;
 
-      // Update count
       const countEl = container.querySelector('.section-count');
       if (countEl) countEl.textContent = `${earned.length} / ${total}`;
 
@@ -688,19 +828,10 @@
         const div = document.createElement('div');
         div.className = `badge rarity-${ach.rarity}${isLocked ? ' locked' : ''}`;
         div.textContent = ach.icon;
-        div.title = '';  // prevent native tooltip
-
-        if (!isLocked) {
-          div.addEventListener('mouseenter', (e) => showTooltip(e, ach));
-          div.addEventListener('mousemove',  (e) => positionTooltip(e.clientX, e.clientY));
-          div.addEventListener('mouseleave', hideTooltip);
-        } else {
-          // Show tooltip for locked too — gives players info on what to aim for
-          div.addEventListener('mouseenter', (e) => showTooltip(e, ach));
-          div.addEventListener('mousemove',  (e) => positionTooltip(e.clientX, e.clientY));
-          div.addEventListener('mouseleave', hideTooltip);
-        }
-
+        div.title = '';
+        div.addEventListener('mouseenter', (e) => showTooltip(e, ach));
+        div.addEventListener('mousemove',  (e) => positionTooltip(e.clientX, e.clientY));
+        div.addEventListener('mouseleave', hideTooltip);
         grid.appendChild(div);
       }
     }
@@ -712,13 +843,15 @@
       detailContentEl.innerHTML = '<div class="placeholder">LOADING…</div>';
 
       try {
-        const [raw, achsRaw] = await Promise.all([
+        const [raw, achsRaw, questsRaw] = await Promise.all([
           callRpc('get_player_stats',        { p_username: username }),
-          callRpc('get_player_achievements', { p_username: username })
+          callRpc('get_player_achievements', { p_username: username }),
+          callRpc('get_player_quests',       { p_username: username })
         ]);
 
-        const p    = Array.isArray(raw)    ? raw[0]    : raw;
-        const achs = Array.isArray(achsRaw) ? achsRaw : [];
+        const p      = Array.isArray(raw)       ? raw[0]      : raw;
+        const achs   = Array.isArray(achsRaw)   ? achsRaw     : [];
+        const quests = Array.isArray(questsRaw) ? questsRaw   : [];
 
         if (!p) { detailContentEl.innerHTML = '<div class="placeholder">NOT FOUND</div>'; return; }
 
@@ -735,6 +868,7 @@
         const cat     = apiCat();
         const catLbl  = cat === 'xp' ? 'XP' : cat.startsWith('wins') ? 'WINS' : 'PLAYS';
         const earnedCount = achs.filter(a => !!a.earned_at).length;
+        const questsDone  = quests.filter(q => q.completed).length;
 
         const winsBreakdown = ['quadclaim','memoryclaim','gunspleef','runspleef']
           .map(g => `<span class="gs"><span class="gs-name">${GAME_LABELS[g]} </span><span class="gs-val">${Number(p['wins_'+g])||0}</span></span>`)
@@ -762,6 +896,11 @@
               <div class="stat-row"><div class="stat-lbl">LAST SEEN</div><div class="stat-val">${relTime(p.last_seen_at)}</div></div>
               <div class="stat-row"><div class="stat-lbl">MEMBER SINCE</div><div class="stat-val">${fmtDate(p.created_at)}</div></div>
             </div>
+          </div>
+
+          <div class="detail-section">
+            <div class="section-title">ACTIVE QUESTS <span class="section-count">${questsDone} / ${quests.length} done</span></div>
+            <div id="detailQuestCards">${quests.length ? renderQuestCards(quests) : '<div class="placeholder-sm">No active quests</div>'}</div>
           </div>
 
           <div class="detail-section" id="badgesSection">
@@ -794,14 +933,18 @@
     function closeDetail() {
       hideTooltip();
       detailViewEl.classList.remove('active');
-      listViewEl.classList.remove('hidden');
+      if (currentTab === 'quests') {
+        questsViewEl.classList.add('active');
+      } else {
+        listViewEl.classList.remove('hidden');
+      }
     }
 
     detailBackEl.addEventListener('click', closeDetail);
 
     /* ── Fetch & refresh ────────────────────────────────────── */
     async function refresh() {
-      if (isFetching) return;
+      if (isFetching || currentTab === 'quests') return;
       isFetching = true;
       try {
         const cat = apiCat();
@@ -825,7 +968,10 @@
 
     function startPolling() {
       if (pollHandle) clearInterval(pollHandle);
-      pollHandle = setInterval(refresh, POLL_MS);
+      pollHandle = setInterval(() => {
+        if (currentTab === 'quests') loadQuests();
+        else refresh();
+      }, POLL_MS);
     }
 
     /* ── Tab switching ──────────────────────────────────────── */
@@ -833,21 +979,37 @@
       if (tab === currentTab) return;
       currentTab = tab;
       currentGame = '';
+
       document.querySelectorAll('.tab').forEach(t =>
         t.classList.toggle('active', t.dataset.tab === tab)
       );
-      if (tab === 'xp') {
-        gameFilterEl.classList.add('hidden');
-      } else {
-        gameFilterEl.classList.remove('hidden');
+
+      const isQuests = tab === 'quests';
+
+      // Show/hide game filter (only visible for wins/plays)
+      gameFilterEl.classList.toggle('hidden', tab === 'xp' || isQuests);
+
+      // Show/hide list vs quests view
+      questsViewEl.classList.toggle('active', isQuests);
+      listViewEl.classList.toggle('hidden', isQuests);
+
+      if (!isQuests) {
         document.querySelectorAll('.gf-pill').forEach(p =>
           p.classList.toggle('active', p.dataset.game === '')
         );
       }
-      closeDetail();
-      rowsWrapEl.classList.add('fading');
-      await refresh();
-      rowsWrapEl.classList.remove('fading');
+
+      // Always close detail when switching tabs
+      hideTooltip();
+      detailViewEl.classList.remove('active');
+
+      if (isQuests) {
+        await loadQuests();
+      } else {
+        rowsWrapEl.classList.add('fading');
+        await refresh();
+        rowsWrapEl.classList.remove('fading');
+      }
     }
 
     document.querySelectorAll('.tab').forEach(tab => {
@@ -861,7 +1023,9 @@
       document.querySelectorAll('.gf-pill').forEach(p =>
         p.classList.toggle('active', p.dataset.game === game)
       );
-      closeDetail();
+      hideTooltip();
+      detailViewEl.classList.remove('active');
+      listViewEl.classList.remove('hidden');
       rowsWrapEl.classList.add('fading');
       await refresh();
       rowsWrapEl.classList.remove('fading');
@@ -886,8 +1050,15 @@
     async function handlePortalsMessage(message) {
       try {
         const username = extractUsername(message);
+        const prevUsername = currentUsername;
         if (username) currentUsername = username;
-        await refresh();
+
+        if (currentTab === 'quests') {
+          // Re-render quests with personalised data once username is known
+          if (username && username !== prevUsername) await loadQuests();
+        } else {
+          await refresh();
+        }
         startPolling();
       } catch (err) { console.error('Portals message handling failed:', err); }
     }
