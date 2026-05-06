@@ -481,6 +481,21 @@
     .quest-prog { font-size: 6.5px; color: rgba(255,255,255,0.28); white-space: nowrap; font-variant-numeric: tabular-nums; }
     .quest-check { font-size: 6.5px; letter-spacing: 0.5px; color: #7df5a0; flex-shrink: 0; }
 
+    /* ── Rank movement arrows ─────────────────── */
+    .row-move {
+      font-size: 7px;
+      min-width: 22px;
+      text-align: right;
+      flex-shrink: 0;
+      line-height: 1;
+      letter-spacing: 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .row-move.up   { color: #3ecb70; }
+    .row-move.down { color: #ff6b35; }
+    .row-move.new  { color: #4da6ff; font-size: 6px; letter-spacing: 0.3px; }
+    .row-move.same { color: rgba(255,255,255,0.13); }
+
     /* ── Footer ────────────────────────────────── */
     .footer {
       display: flex;
@@ -773,6 +788,19 @@
       }
     }
 
+    /* ── Movement helper ────────────────────────────────────── */
+    function moveCell(movement) {
+      // Only render for top-level tabs (xp / wins / plays), not game sub-filters
+      if (currentGame) return '';
+      if (currentTab !== 'xp' && currentTab !== 'wins' && currentTab !== 'plays') return '';
+      if (movement === null || movement === undefined) {
+        return '<div class="row-move new">NEW</div>';
+      }
+      if (movement > 0) return `<div class="row-move up">↑${movement}</div>`;
+      if (movement < 0) return `<div class="row-move down">↓${Math.abs(movement)}</div>`;
+      return '<div class="row-move same">—</div>';
+    }
+
     /* ── Render list ────────────────────────────────────────── */
     function renderRows(rows, ownRank) {
       if (!rows || rows.length === 0) {
@@ -786,6 +814,7 @@
         html += `
           <div class="row${isMe ? ' is-me' : ''}" data-username="${esc(r.username)}" data-rank="${rank}">
             <div class="row-rank ${rankCls(rank)}">${rankIcon(rank)}</div>
+            ${moveCell(r.movement)}
             <div class="row-name">${esc(r.username)}${isMe ? '<span class="you-tag">(you)</span>' : ''}</div>
             <div class="row-value">${fmtValue(r.value, cat)}</div>
             <div class="row-chevron">›</div>
